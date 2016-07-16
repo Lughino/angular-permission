@@ -2,9 +2,9 @@ describe('permission', function () {
   'use strict';
 
   describe('models', function () {
-    describe('factory: Role', function () {
+    describe('factory: PermRole', function () {
 
-      var Role;
+      var PermRole;
       var PermissionStore;
 
       beforeEach(function () {
@@ -13,18 +13,18 @@ describe('permission', function () {
         installPromiseMatchers(); // jshint ignore:line
 
         inject(function ($injector) {
-          Role = $injector.get('Role');
+          PermRole = $injector.get('PermRole');
           PermissionStore = $injector.get('PermissionStore');
         });
       });
 
-      describe('constructor: Role', function () {
+      describe('constructor: PermRole', function () {
         it('should throw an exception on invalid roleName', function () {
           // GIVEN
           // WHEN
           // THEN
           expect(function () {
-            new Role(null, function () {
+            new PermRole(null, function () {
               return true;
             });
           }).toThrow(new TypeError('Parameter "roleName" name must be String'));
@@ -35,7 +35,7 @@ describe('permission', function () {
           // WHEN
           // THEN
           expect(function () {
-            new Role('valid-name', undefined);
+            new PermRole('valid-name', undefined);
           }).toThrow(new TypeError('Parameter "validationFunction" must be array or function'));
         });
 
@@ -45,7 +45,7 @@ describe('permission', function () {
           var permissionNames = ['USER'];
 
           // WHEN
-          var role = new Role(permissionName, permissionNames);
+          var role = new PermRole(permissionName, permissionNames);
 
           // THEN
           expect(role.roleName).toBe(permissionName);
@@ -56,7 +56,7 @@ describe('permission', function () {
       describe('method: validateRole', function () {
         it('should call directly validationFunction when no permissions were provided', function () {
           // GIVEN
-          var role = new Role('ACCOUNTANT', function () {
+          var role = new PermRole('ACCOUNTANT', function () {
             return true;
           });
           spyOn(role, 'validationFunction').and.callThrough();
@@ -73,7 +73,7 @@ describe('permission', function () {
           PermissionStore.definePermission('USER', function () {
             return true;
           });
-          var role = new Role('ACCOUNTANT', ['USER']);
+          var role = new PermRole('ACCOUNTANT', ['USER']);
           var userDefinition = PermissionStore.getPermissionDefinition('USER');
           spyOn(userDefinition, 'validationFunction').and.callThrough();
 
@@ -91,7 +91,7 @@ describe('permission', function () {
             .and.callFake(function () {
               return true;
             });
-          var permission = new Role(roleName, validationFunction);
+          var permission = new PermRole(roleName, validationFunction);
 
           // WHEN
           var validationResult = permission.validateRole();
@@ -108,7 +108,7 @@ describe('permission', function () {
             .and.callFake(function () {
               return false;
             });
-          var permission = new Role(permissionName, validationFunction);
+          var permission = new PermRole(permissionName, validationFunction);
 
           // WHEN
           var validationResult = permission.validateRole();
@@ -121,7 +121,7 @@ describe('permission', function () {
 
         it('should return rejected promise when at least one of permissions is not defined', function () {
           // GIVEN
-          var role = new Role('ACCOUNTANT', ['FAKE']);
+          var role = new PermRole('ACCOUNTANT', ['FAKE']);
 
           // WHEN
           var validationResult = role.validateRole();
@@ -133,7 +133,7 @@ describe('permission', function () {
 
         it('should throw error when could not validate role', function () {
           // GIVEN
-          var role = new Role('ACCOUNTANT', [{}]);
+          var role = new PermRole('ACCOUNTANT', [{}]);
 
           // WHEN
           // THEN

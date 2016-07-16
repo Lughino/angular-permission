@@ -8,20 +8,20 @@
  * @param PermissionStore {permission.PermissionStore} Permission definition storage
  * @param TransitionProperties {permission.TransitionProperties} Helper storing ui-router transition parameters
  *
- * @return {permission.Role}
+ * @return {permission.PermRole}
  */
 function RoleFactory($q, PermissionStore, TransitionProperties) {
   'ngInject';
 
   /**
    * Role definition constructor
-   * @class permission.Role
+   * @class permission.PermRole
    *
    * @param roleName {String} Name representing role
    * @param validationFunction {Function|Array<String>} Optional function used to validate if permissions are still
    *   valid or list of permission names representing role
    */
-  function Role(roleName, validationFunction) {
+  function PermRole(roleName, validationFunction) {
     validateConstructor(roleName, validationFunction);
 
     this.roleName = roleName;
@@ -30,11 +30,11 @@ function RoleFactory($q, PermissionStore, TransitionProperties) {
 
   /**
    * Checks if role is still valid
-   * @methodOf permission.Role
+   * @methodOf permission.PermRole
    *
    * @returns {Promise} $q.promise object
    */
-  Role.prototype.validateRole = function () {
+  PermRole.prototype.validateRole = function () {
     if (angular.isFunction(this.validationFunction)) {
       var validationResult = this.validationFunction.call(null, this.roleName, TransitionProperties);
       if (!angular.isFunction(validationResult.then)) {
@@ -61,7 +61,7 @@ function RoleFactory($q, PermissionStore, TransitionProperties) {
 
   /**
    * Converts a value into a promise, if the value is truthy it resolves it, otherwise it rejects it
-   * @methodOf permission.Role
+   * @methodOf permission.PermRole
    * @private
    *
    * @param result {Boolean} Function to be wrapped into promise
@@ -83,7 +83,7 @@ function RoleFactory($q, PermissionStore, TransitionProperties) {
 
   /**
    * Checks if provided permission has accepted parameter types
-   * @methodOf permission.Role
+   * @methodOf permission.PermRole
    * @private
    *
    * @throws {TypeError}
@@ -102,9 +102,9 @@ function RoleFactory($q, PermissionStore, TransitionProperties) {
     }
   }
 
-  return Role;
+  return PermRole;
 }
 
 angular
   .module('permission')
-  .factory('Role', RoleFactory);
+  .factory('PermRole', RoleFactory);

@@ -1,12 +1,12 @@
 'use strict';
 
 /**
- * Role definition storage
+ * PermRole definition storage
  * @name permission.RoleStore
  *
- * @param Role {permission.Role|Function} Role definition constructor
+ * @param PermRole {permission.PermRole|Function} PermRole definition constructor
  */
-function RoleStore(Role) {
+function RoleStore(PermRole) {
   'ngInject';
 
   var roleStore = {};
@@ -28,7 +28,7 @@ function RoleStore(Role) {
    *   permission names that has to be owned to have a role
    */
   function defineRole(roleName, validationFunction) {
-    roleStore[roleName] = new Role(roleName, validationFunction);
+    roleStore[roleName] = new PermRole(roleName, validationFunction);
   }
 
   /**
@@ -73,7 +73,7 @@ function RoleStore(Role) {
    * Returns role definition object by it's name
    * @method permission.RoleStore
    *
-   * @returns {permission.Role} Role definition object
+   * @returns {permission.PermRole} PermRole definition object
    */
   function getRoleDefinition(roleName) {
     return roleStore[roleName];

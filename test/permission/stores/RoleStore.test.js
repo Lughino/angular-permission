@@ -6,7 +6,7 @@ describe('permission', function () {
 
       var RoleStore;
       var PermissionStore;
-      var Role;
+      var PermRole;
 
       beforeEach(function () {
         module('permission');
@@ -14,7 +14,7 @@ describe('permission', function () {
 
       beforeEach(function () {
         inject(function ($injector) {
-          Role = $injector.get('Role');
+          PermRole = $injector.get('PermRole');
           RoleStore = $injector.get('RoleStore');
           PermissionStore = $injector.get('PermissionStore');
         });
@@ -79,7 +79,7 @@ describe('permission', function () {
           var permission = RoleStore.getRoleDefinition('ACCOUNTANT');
 
           // THEN
-          expect(permission instanceof Role).toBeTruthy();
+          expect(permission instanceof PermRole).toBeTruthy();
         });
       });
 
